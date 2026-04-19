@@ -1,8 +1,7 @@
-from fastapi import FastAPI, HTTPException, Query, Depends
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse
 from pathlib import Path
-import json
-import re  # для очистки ввода
+import re
 
 from config.settings import Settings
 from infrastructure.repositories.json_icon_repository import JsonIconRepository
@@ -234,8 +233,7 @@ async def update_emoji(
         key: str,
         emoji: str = Query(...),
 ):
-    # Очистка: оставляем только цифры
-    cleaned = re.sub(r'[^0-9]', '', emoji.strip())
+    cleaned = int(re.sub(r'[^0-9]', '', emoji.strip()))
 
     try:
         REPO.save_emoji(key, cleaned)
@@ -243,8 +241,6 @@ async def update_emoji(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-# Статические файлы — логотипы
 from fastapi.staticfiles import StaticFiles
 import os
 
