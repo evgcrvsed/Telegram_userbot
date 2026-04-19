@@ -1,0 +1,8 @@
+settings.py
+*.session
+icons.json
+*.log
+data/logoUrl/
+/bot_backup
+/.venv
+/.idea
