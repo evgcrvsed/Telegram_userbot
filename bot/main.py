@@ -23,7 +23,6 @@ import uvicorn
 
 
 async def start_telegram(client: TelegramClient, logger: UltraLogger):
-    """Запуск Telegram бота"""
     await client.start()
     logger.info("Telegram бот успешно запущен!")
     me = await client.get_me()
@@ -32,22 +31,19 @@ async def start_telegram(client: TelegramClient, logger: UltraLogger):
 
 
 async def start_fastapi():
-    """Запуск FastAPI сервера"""
     config = uvicorn.Config(
         fastapi_app,
         host="0.0.0.0",
         port=8000,
         log_level="info",
-        reload=False,  # отключаем reload в production
+        reload=False,
     )
     server = uvicorn.Server(config)
 
-    # Важно: используем lifespan вместо прямого serve в некоторых случаях
     await server.serve()
 
 
 async def main():
-    # === Сборка всех зависимостей ===
     settings = Settings()
     logger = UltraLogger()
 
@@ -68,8 +64,10 @@ async def main():
         db=icon_repo
     )
 
+    out_handler = OutHandler(client, logger, settings, 5)
+
     out_handler = OutHandler(
-        client=client,  # важно передавать client
+        client=client,
         logger=logger,
         settings=settings,
         shell_executor=shell_executor,
@@ -80,7 +78,6 @@ async def main():
     in_handler = InHandler(logger=logger, settings=settings)
     router = HandlerRouter(out_handler=out_handler, in_handler=in_handler)
 
-    # Регистрация обработчика сообщений
     @client.on(events.NewMessage())
     async def message_handler(event: events.NewMessage.Event):
         try:
@@ -88,17 +85,15 @@ async def main():
         except Exception as e:
             logger.error(f"Ошибка обработки сообщения: {e}")
 
-    # Создаём необходимые папки
     os.makedirs('data', exist_ok=True)
     os.makedirs('data/logoUrl', exist_ok=True)
 
-    # === Запуск двух сервисов параллельно ===
     logger.info("Запускаем Telegram бота и FastAPI сервер...")
 
     await asyncio.gather(
         start_telegram(client, logger),
         start_fastapi(),
-        return_exceptions=True  # чтобы один сбой не убивал другой
+        return_exceptions=True
     )
 
 

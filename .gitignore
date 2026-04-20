@@ -2,6 +2,7 @@ settings.py
 *.session
 icons.json
 *.log
+data/
 data/logoUrl/
 /bot_backup
 /.venv
