@@ -245,4 +245,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 
 os.makedirs("data/logoUrl", exist_ok=True)
+os.makedirs("data/videos", exist_ok=True)
+
 app.mount("/static/logos", StaticFiles(directory="data/logoUrl"), name="logos")
+app.mount("/static/videos", StaticFiles(directory="data/videos"), name="videos")
