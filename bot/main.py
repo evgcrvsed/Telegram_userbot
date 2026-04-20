@@ -64,7 +64,14 @@ async def main():
         db=icon_repo
     )
 
-    out_handler = OutHandler(client, logger, settings, 5)
+    out_handler = OutHandler(
+        client=client,
+        logger=logger,
+        settings=settings,
+        shell_executor=shell_executor,
+        match_service=match_service,
+        icon_repo=icon_repo
+    )
 
     out_handler = OutHandler(
         client=client,
