@@ -1,10 +1,9 @@
-# presentation/telegram/commands/command_registry.py
 from typing import Dict
 from .base_command import BaseCommand
 from .memory_command import MemoryCommand
 from .restart_command import RestartCommand
 from .help_command import HelpCommand
-# ... другие команды
+
 
 class CommandRegistry:
     """Реестр всех команд — легко добавлять новые без изменения OutHandler"""
