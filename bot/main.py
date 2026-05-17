@@ -73,16 +73,13 @@ async def main():
         icon_repo=icon_repo
     )
 
-    out_handler = OutHandler(
+    in_handler = InHandler(
         client=client,
         logger=logger,
         settings=settings,
         shell_executor=shell_executor,
         match_service=match_service,
-        icon_repo=icon_repo
-    )
-
-    in_handler = InHandler(logger=logger, settings=settings)
+        icon_repo=icon_repo)
     router = HandlerRouter(out_handler=out_handler, in_handler=in_handler)
 
     @client.on(events.NewMessage())

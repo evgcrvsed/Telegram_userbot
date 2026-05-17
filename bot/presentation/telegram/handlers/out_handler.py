@@ -26,8 +26,8 @@ class OutHandler(BaseHandler):
         super().__init__(logger, settings)
         self.client = client
         self.shell_executor = shell_executor
-        self.match_service = match_service  # сервис матчей
-        self.icon_repo = icon_repo  # репозиторий эмодзи
+        self.match_service = match_service
+        self.icon_repo = icon_repo
 
     async def handle(self, event: events.NewMessage.Event):
         await self.log_message(event, "→ Исходящее")
